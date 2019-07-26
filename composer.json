@@ -1,0 +1,10 @@
+{
+    "name" : "solleer/oauth-signin",
+    "autoload": {
+        "psr-4": {"Solleer\\OAuthSignin\\": "src/"}
+    },
+    "require" : {
+        "league/oauth2-client" : "^2.4.1",
+        "google/apiclient": "^2.0"
+    }
+}
