@@ -6,6 +6,7 @@
     "require" : {
         "solleer/user" : "^1.1",
         "league/oauth2-client" : "^2.4.1",
+        "microsoft/microsoft-graph": "^1.5.0",
         "google/apiclient": "^2.0"
     }
 }
