@@ -25,7 +25,7 @@ class Office365Signin implements SigninHandler {
         ];
     }
 
-    public function getUserEmail($token): string {
+    public function getUserId($token): string {
         if (count(explode('.', $token['access_token'])) > 1) return $this->getIdFromToken($token);
         else return $this->getIdFromGraph($token);
     }

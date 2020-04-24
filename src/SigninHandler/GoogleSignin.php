@@ -17,7 +17,7 @@ class GoogleSignin implements SigninHandler {
         return $this->checkResult($this->service->getClient()->fetchAccessTokenWithAuthCode($code));
     }
 
-    public function getUserEmail($token): string {
+    public function getUserId($token): string {
         $this->service->getClient()->setAccessToken($token);
         return $this->service->userinfo->get()->getEmail();
     }

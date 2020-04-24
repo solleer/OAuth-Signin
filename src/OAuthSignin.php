@@ -18,11 +18,11 @@ class OAuthSignin {
         $accessToken = $this->model->getAccessToken($code);
         if (empty($accessToken)) return false;
 
-        $email = strtolower($this->model->getUserEmail($accessToken));
+        $userId = strtolower($this->model->getUserId($accessToken));
 
-        if ($this->users->getUser($email)) {
+        if ($this->users->getUser($userId)) {
             $this->oauthStatus->setOAuthVars($accessToken);
-            $this->userStatus->setSigninID($email);
+            $this->userStatus->setSigninID($userId);
             return true;
         }
         else return false;
