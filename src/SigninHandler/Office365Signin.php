@@ -4,9 +4,11 @@ namespace Solleer\OAuthSignin\SigninHandler;
 
 class Office365Signin implements SigninHandler {
     private $auth;
+    private $graph;
 
-    public function __construct(Office365Auth $auth) {
+    public function __construct(Office365Auth $auth, \Microsoft\Graph\Graph $graph) {
         $this->auth = $auth;
+        $this->graph = $graph;
     }
 
     public function getOAuthUrl(): string {
@@ -24,13 +26,23 @@ class Office365Signin implements SigninHandler {
     }
 
     public function getUserEmail($token): string {
+        if (count(explode('.', $token['access_token'])) > 1) return $this->getIdFromToken($token);
+        else return $this->getIdFromGraph($token);
+    }
+
+    private function getIdFromToken($token) {
         $decodedAccessTokenPayload = base64_decode(
             explode('.', $token['access_token'])[1]
         );
         $jsonAccessTokenPayload = json_decode($decodedAccessTokenPayload, true);
-
-        // The following user properties are needed in the next page
         return $jsonAccessTokenPayload['unique_name'];
+    }
+
+    private function getIdFromGraph($token) {
+        $result = $this->graph->setAccessToken($token['access_token'])->createRequest('GET', '/me')
+            ->execute()->getBody();
+
+        return $result['userPrincipalName'];
     }
 
     public function isTokenExpired($token): bool {
